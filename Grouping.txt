@@ -1,0 +1,83 @@
+// What is the average Age of all users?
+
+[
+  {
+    $group: {
+      _id: null,
+      averageAge : {
+        $avg : "$age"
+      }
+    }
+  }
+]
+
+// List the top 5 most common favorite fruits among the users -
+
+[
+  {
+    $group: {
+      _id: "$favoriteFruit",
+      countt : {
+        $sum : 1
+      }
+    }
+  },
+  {
+    $sort: {
+      countt: -1
+    }
+  },
+  {
+    $limit: 5 
+  }
+]
+
+
+// Find the total number of males and females -
+
+[
+  {
+    $group: {
+      _id: "$gender",
+      genderCount : {
+        $sum : 1
+      }
+    }
+  }
+]
+
+
+// Which country has the highest registered users?   (Drilling inside company and the location and then country) - 
+
+[
+  {
+    $group: {
+      _id: "$company.location.country",
+      countryUserCount : {
+        $sum : 1
+      }
+    }
+  },
+  {
+    $sort: {
+      countryUserCount: -1
+    }
+  },
+  {
+    $limit: 2
+  }
+]
+
+
+// List all unique eye colors present in the collection - 
+
+[
+  {
+    $group: {
+      _id: "$eyeColor"
+    }
+  }
+]
+
+
+

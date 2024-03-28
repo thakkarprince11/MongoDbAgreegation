@@ -1,0 +1,52 @@
+
+
+
+// What is the average number of tags per user? (Array using $unwind) - 
+
+[
+  {
+    $unwind: {
+      path: "$tags",
+      
+    }
+  },
+  {
+    $group: {
+      _id: "$_id",
+      numberOfTags : {
+        $sum : 1
+      }
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      avgNumberOfTags : {
+        $avg : "$numberOfTags"
+      }
+    }
+  }
+]
+
+
+// What is the average number of tags per user? (Array using $addFields) - 
+
+[
+  {
+    $addFields: {
+      numberOfTags: {
+        $size : {
+          $ifNull : ["$tags" , []]
+        }
+      }
+    }
+  },
+  {
+    $group: {
+      _id: null,
+      averageNumOfTags : {
+        $avg : "$numberOfTags"
+      }
+    }
+  }
+]

@@ -1,0 +1,13 @@
+
+// How many users are Active?
+
+[
+  {
+    $match: {
+      isActive : true
+    }
+  },
+  {
+    $count: 'activeUsers'
+  }
+]

@@ -1,0 +1,83 @@
+
+
+// Who has registered most recently?
+
+[
+  {
+    $sort: {
+      registered: -1
+    }
+  },
+  {
+    $limit: 4
+  },
+  {
+    $project: {
+      name : 1,
+      registered : 1,
+      favoriteFruit : 1
+    }
+  }
+]
+
+
+// Categorise users by their favourite fruit - 
+
+[
+  {
+    $group: {
+      _id: "$favoriteFruit",
+      users : {
+        $push : "$name"
+      }
+    }
+  }
+]
+
+
+
+// How many users have 'ad' as the SECOND TAG in their list of tags?
+
+[
+  {
+    $match: {
+       "tags.1" : "ad"
+    }
+  },
+  {
+    $count: 'UsersWithAdAsSecondPostion'
+  }
+]
+
+
+// Find users who have both 'enim' and 'id' as their tags ($all)-
+
+[
+  {
+    $match: {
+      tags : {
+        $all : ["enim", "id"]
+      }
+    }
+  }
+]
+
+
+// How many companies located in the USA with their corresponding user count?
+
+[
+  {
+    $match: {
+      "company.location.country" : "USA"
+    }
+  },
+  {
+    $group: {
+      _id: "$company.title",
+      userCountUSA : {
+        $sum : 1
+      }
+    }
+  }
+]
+
